@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="close">
+    <file>cil-x.png</file>
+  </qresource>
+  <qresource prefix="face">
+    <file>teste.png</file>
+  </qresource>
+</RCC>
