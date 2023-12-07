@@ -1,0 +1,89 @@
+1ª Consulta: Nome e data de nascimento do músico mais velho cadastrado na escola
+
+USE escola_de_musica;
+SELECT Nome, Snome as "Sobrenome", DataNascimento as "Data de Nascimento" FROM musico
+ORDER BY DataNascimento LIMIT 1;
+
+2ª Consulta: Nome e data de nascimento do músico mais novo cadastrado na escola
+
+USE escola_de_musica;
+SELECT Nome, Snome as "Sobrenome", DataNascimento as "Data de Nascimento" FROM musico
+ORDER BY DataNascimento DESC LIMIT 1;
+
+3ª Consulta: Quantidade de instrumentos musicais de cada um dos tipos cadastrados
+
+USE escola_de_musica;
+SELECT instrumentos.Nome as "Instrumento", COUNT(toca.fk_instrumento_codigo) as "Quantidade de Instrumentos" FROM instrumentos, toca WHERE toca.fk_instrumento_codigo = instrumentos.Codigo
+GROUP BY instrumentos.Codigo;
+
+4ª Consulta: Quantidade de instrumentos musicais distintos por classificação cadastrados
+
+USE escola_de_musica;
+SELECT Classificacao as "Categoria", COUNT(Classificacao) as "Quantidade de Instrumentos na categoria:" FROM instrumentos
+GROUP BY Classificacao;
+
+5ª Consulta: Nome e compositor das 8 sinfonias mais antigas do cadastro
+
+USE escola_de_musica;
+SELECT Compositor, Nome as "Título da Sinfonia" FROM sinfonia
+ORDER BY DataCriacao LIMIT 8;
+
+6ª Consulta: Nome e compositor das 8 sinfonias mais recentes do cadastro
+
+USE escola_de_musica;
+SELECT Compositor, Nome as "Título da Sinfonia" FROM sinfonia
+ORDER BY DataCriacao DESC LIMIT 8;
+
+7ª Consulta: Tipos de instrumentos que cada músico está apto a tocar
+
+USE escola_de_musica;
+SELECT musico.Nome, musico.Snome as "Sobrenome", instrumentos.Nome as "Instrumentos que toca" FROM musico, instrumentos, toca WHERE musico.Matricula = toca.fk_musico_matricula AND instrumentos.Codigo = toca.fk_instrumento_codigo
+ORDER BY toca.fk_musico_matricula;
+
+8ª Consulta: Nome do músico e da sinfonia mais recentemente apresentada
+
+USE escola_de_musica;
+SELECT CONCAT(musico.Nome, " ", musico.Snome) as "Nome do Músico", sinfonia.Nome as "Sinfonia Apresentada", apresenta.DataApresentacao as "Data da Apresentação" FROM musico, sinfonia, apresenta WHERE musico.Matricula = apresenta.fk_musico_matricula AND sinfonia.Codigo = apresenta.fk_sinfonia_codigo
+ORDER BY apresenta.DataApresentacao DESC LIMIT 1;
+
+9ª Consulta: Músicos que pertencem a uma determinada orquestra
+
+USE escola_de_musica;
+SELECT CONCAT(Nome, " ", Snome) as "Músicos que pertencem a China Philhamornic Orchestra" FROM musico WHERE fk_orquestra_codigo = 2021006
+ORDER BY Matricula;
+
+10ª Consulta: Função do músico tal na apresentação da sinfonia tal
+
+USE escola_de_musica;
+SELECT CONCAT(musico.Nome, " ", musico.Snome) as "Músico", apresenta.FuncaoEspecifica as "Função dele na Apresentação", sinfonia.Nome as "Sinfonia", apresenta.DataApresentacao as "Data da Apresentação" FROM musico, apresenta, sinfonia WHERE musico.Matricula = apresenta.fk_musico_matricula AND sinfonia.Codigo = apresenta.fk_sinfonia_codigo AND apresenta.fk_musico_matricula = 3003 AND apresenta.fk_sinfonia_codigo = 10019
+ORDER BY apresenta.DataApresentacao;
+
+11ª Consulta: Nome do músico e da sinfonia das 5 primeiras  apresentações cadastradas
+
+USE escola_de_musica;
+SELECT CONCAT(musico.Nome, " ", musico.Snome) as "Nome do Músico", sinfonia.Nome as "Sinfonia Apresentada", apresenta.DataApresentacao as "Data da Apresentação" FROM musico, sinfonia, apresenta WHERE musico.Matricula = apresenta.fk_musico_matricula AND sinfonia.Codigo = apresenta.fk_sinfonia_codigo
+ORDER BY apresenta.DataApresentacao LIMIT 5;
+
+12ª Consulta: Orquestras que executaram uma determinada sinfonia
+
+USE escola_de_musica;
+SELECT orquestra.Nome as "Orquestras que executaram a Sinfonia Suite No. 4 in D major, BWV 1069", executa.DataExecucao as "Data da Execução", executa.Desempenho as "Nota de Desempenho" FROM orquestra, executa WHERE orquestra.Codigo = executa.fk_orquestra_codigo AND executa.fk_sinfonia_codigo = 10017
+ORDER BY executa.DataExecucao;
+
+13ª Consulta: Sinfonias executadas por uma determinada orquestra
+
+USE escola_de_musica;
+SELECT sinfonia.Nome as "Sinfonias Executadas pela Vienna Philharmonic", executa.DataExecucao as "Data da Execução", executa.Desempenho as "Nota de Desempenho" FROM sinfonia, executa WHERE sinfonia.Codigo = executa.fk_sinfonia_codigo AND executa.fk_orquestra_codigo = 2021002
+ORDER BY executa.DataExecucao;
+
+14ª Consulta: Quantidade de musicos em cada orquestra cadastrados
+
+USE escola_de_musica;
+SELECT orquestra.Nome as "Orquestra", COUNT(musico.fk_orquestra_codigo) as "Quantidade de músicos na orquestra:" FROM orquestra, musico WHERE orquestra.Codigo = musico.fk_orquestra_codigo
+Group By orquestra.Nome;
+
+15ª Consulta: Quantidade de musicos classificados por função cadastrados na escola
+
+USE escola_de_musica;
+SELECT FuncaoTradicional as "Função", COUNT(FuncaoTradicional) as "Quantidade de músicos na função:" FROM musico
+Group By FuncaoTradicional;
